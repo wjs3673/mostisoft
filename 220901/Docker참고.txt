@@ -1,0 +1,23 @@
+Study사이트 : https://docs.docker.com/get-docker/
+Docker 설치 : 
+https://docs.docker.com/desktop/windows/install/
+https://developern.tistory.com/entry/Windows-10-WSL2%EC%97%90-docker-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
+
+Docker Desktop 설치
+https://docs.microsoft.com/ko-kr/windows/wsl/tutorials/wsl-containers
+
+WSL 설치 :
+https://docs.microsoft.com/ko-kr/windows/wsl/install
+
+Linux 커널 업데이트 패키지 다운로드(4단계 항목 실행)
+https://docs.microsoft.com/ko-kr/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package
+
+참고
+Docker Overview : https://docs.docker.com/get-started/overview/
+https://cdlee479.tistory.com/9
+WSL : https://lazymolt.tistory.com/71
+
+https://tecoble.techcourse.co.kr/post/2021-08-14-docker/
+https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html
+https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html
+https://subicura.com/2017/02/10/docker-guide-for-beginners-create-image-and-deploy.html
