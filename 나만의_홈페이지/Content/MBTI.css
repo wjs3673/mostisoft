@@ -1,0 +1,24 @@
+table {
+    margin-left: auto;
+    margin-right: auto;
+    color: #292114;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    background-color: #e9e6e1;
+}
+table .title {
+    font-size: 30px;
+}
+table a {
+    color: #292114;
+    text-decoration: none;
+}
+table a:hover {
+    color: #BE7D1F;
+}
+table .box {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

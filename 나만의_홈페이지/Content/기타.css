@@ -1,0 +1,53 @@
+table {
+    margin-left: auto;
+    margin-right: auto;
+    border-style: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin-bottom: 30px;
+}
+section .box1 {
+    margin-top: 50px;
+    padding: 10px 10px 10px 10px;
+    background-color: #bba27f;
+    float: left;
+    color: #373616;
+    width: 600px;
+    height: 105px;
+    font-size: 15px;
+    line-height: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+section .box2 {
+    margin-top: 50px;
+    padding: 10px 10px 10px 10px;
+    background-color: #bba27f;
+    float: right;
+    color: #373616;
+    width: 600px;
+    height: 105px;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    line-height: 2;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+section .scroll {
+    float: left;
+    margin-top: 50px;
+    padding: 10px 10px 10px 10px;
+    background-color: #bba27f;
+    outline: 1px none black;
+    color: #373616;
+    width: 600px;
+    height: 105px;
+    font-size: 15px;
+    overflow: scroll;
+    line-height: 2;
+}
