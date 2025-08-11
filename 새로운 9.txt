@@ -1,0 +1,25 @@
+AWS
+ML => FM
+SageMaker -> 파인튜닝 : Bedrock이 아니라 라마
+POC
+
+1. Domains : EFS - 공유 파일 형태로 존재, IIM USER 마다
+: Studio Notebooks - 최근 것
+: Notebook Instances - 기존에 쓰던 거 가져올 때
+2. SageMaker JupyterLab
+2-1. Space 생성
+2-2. 크기 지정 후 생성 완료
+3. IDE : VS Code 기반 사용 환경
+4. AI assisted ML 개발 : AI 코드 생성기, 
+5. skip 당
+
+고객 관리 VPC 
+
+1. 엔드포인트 기반: 리얼타임 추론(*) - 대용량 x, 서버리스 추론, 비동기 추론
+배치 - 대용량
+
+MLOPS : Feature engineering
+
+Autopilot(*)
+
+SageMaker Canvas : GUI 기반 인터페이스, 

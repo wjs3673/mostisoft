@@ -1,0 +1,12 @@
+{
+    "p_clntnum": "0010046850",
+    "p_clntmgmcustcd": "0010046850",
+    "p_prngdivcd": "01",
+    "p_farediv": "03",
+    "p_cntrlarccd": "01",
+    "p_boxtyp": "1",
+    "p_sndprsnaddr": "대전 대덕구 대덕대로 1447번길 39",
+    "p_rcvraddr": "서울시 종로구 종로5길 7, 2층"
+}
+
+https://addrcorp-dev.cjlogistics.com/json/getAddressInformation.do

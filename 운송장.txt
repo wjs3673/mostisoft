@@ -1,0 +1,58 @@
+SELECT
+	SOR.Stockout_Request_Seq,	-- 출고지시SEQ
+	SOR.Request_No,	-- 출고번호
+	STSORE.Sorting_Code,	-- 피킹차수번호1
+	STSORE.Invoice_No,	-- 운송장번호
+	SOSI09.Reference_Value AS Ord_ID,	-- 공개주문번호
+	CONVERT(VARCHAR, GETDATE(), 111) AS Bill_Date,	-- 영수증일자
+	STSORE.Address_Reference1,	-- 터미널코드1
+	STSORE.Address_Reference2,	-- 터미널코드2
+	STSORE.Address_Reference3,	-- 터미널부코드1
+	STSORE.Shipping_Work_Name,	-- 자동출고배송구분1
+	SOSI03.Reference_Value AS Rcvr_Name,	-- 수령자명1
+	SOSI02.Reference_Value AS Rcvr_Mob_No,	-- 수령자핸드폰번호1
+	SOSI01.Reference_Value AS Rcvr_New_Addr,	-- 수령지주소1
+	STSORE.Address_Reference4,	-- 수령지주소요약1
+	STSORE.Sorting_Work_Name,	-- 피킹구분
+	STSORE.Sorting_No,	-- DAS셀번호문구1
+	STSORE.Equipment_Code,	-- 작업라인번호1
+	STSORE.Packing_Work_Name,	-- 선물포장구분1
+	STSORE.Address_Reference5,	-- 집배도착대리점명1
+	SOSI04.Reference_Value AS Delv_Msg,	-- 배송메세지
+	SOR.Client_Name,	--　주문자명2
+	SOSI08.Reference_Value AS Infor_Txt,	-- 안내문구1
+	SOR.Client_Code,	-- 제휴업체
+	SOSI07.Reference_Value AS Zip_Code	-- 우편번호
+FROM 
+	dbo.tStockoutRequest AS SOR WITH(NOLOCK)
+	INNER JOIN (
+		SELECT TOP 1
+			SOG.Stockout_Request_Seq,	--출고지시SEQ
+			ST.Sorting_Code,	-- 피킹차수번호1
+			SH.Invoice_No,	-- 송장번호
+			SH.Address_Reference1,	-- 터미널코드1
+			SH.Address_Reference2,	-- 터미널코드2
+			SH.Address_Reference3,	-- 터미널부코드1
+			dbo.fGetWorkName(SOG.Shipping_Work_Seq) AS Shipping_Work_Name,	-- 자동출고배송구분1
+			SH.Address_Reference4,	-- 수령지주소요약1
+			dbo.fGetWorkName(SOG.Sorting_Work_Seq) AS Sorting_Work_Name,	-- 피킹구분
+			STG.Sorting_No,	-- DAS셀번호문구1
+			EQ.Equipment_Code,	-- 작업라인번호1
+			dbo.fGetWorkName(SOG.Packing_Work_Seq) AS Packing_Work_Name,	-- 선물포장구분1
+			SH.Address_Reference5	-- 집배도착대리점명1
+		FROM
+			dbo.tSortingGoods AS STG WITH(NOLOCK)
+			INNER JOIN dbo.tSorting AS ST WITH(NOLOCK) ON ST.Sorting_Seq = STG.Sorting_Seq
+			INNER JOIN dbo.tStockoutRequestGoods AS SOG WITH(NOLOCK) ON SOG.Stockout_Request_Goods_Seq = STG.Stockout_Request_Goods_Seq
+			INNER JOIN dbo.tEquipment AS EQ WITH(NOLOCK) ON EQ.Equipment_Seq = ST.Equipment_Seq
+			INNER JOIN dbo.tShipping AS SH WITH(NOLOCK) ON SH.Shipping_Seq = SOG.Shipping_Seq
+		WHERE
+			SOG.Stockout_Request_Seq = 639732	-- 바꿀 것
+	) AS STSORE ON STSORE.Stockout_Request_Seq = SOR.Stockout_Request_Seq
+	LEFT OUTER JOIN dbo.tStockReferenceInformation AS SOSI01 WITH(NOLOCK) ON SOSI01.Owner_Seq = SOR.Stockout_Request_Seq AND SOSI01.Reference_Group_Code = 'SO_ShippingInfo' AND SOSI01.Reference_Code = 'SOSI01'
+	LEFT OUTER JOIN dbo.tStockReferenceInformation AS SOSI02 WITH(NOLOCK) ON SOSI02.Owner_Seq = SOR.Stockout_Request_Seq AND SOSI02.Reference_Group_Code = 'SO_ShippingInfo' AND SOSI02.Reference_Code = 'SOSI02'
+	LEFT OUTER JOIN dbo.tStockReferenceInformation AS SOSI03 WITH(NOLOCK) ON SOSI03.Owner_Seq = SOR.Stockout_Request_Seq AND SOSI03.Reference_Group_Code = 'SO_ShippingInfo' AND SOSI03.Reference_Code = 'SOSI03'
+	LEFT OUTER JOIN dbo.tStockReferenceInformation AS SOSI04 WITH(NOLOCK) ON SOSI04.Owner_Seq = SOR.Stockout_Request_Seq AND SOSI04.Reference_Group_Code = 'SO_ShippingInfo' AND SOSI04.Reference_Code = 'SOSI04'
+	LEFT OUTER JOIN dbo.tStockReferenceInformation AS SOSI07 WITH(NOLOCK) ON SOSI07.Owner_Seq = SOR.Stockout_Request_Seq AND SOSI07.Reference_Group_Code = 'SO_ShippingInfo' AND SOSI07.Reference_Code = 'SOSI07'
+	LEFT OUTER JOIN dbo.tStockReferenceInformation AS SOSI08 WITH(NOLOCK) ON SOSI08.Owner_Seq = SOR.Stockout_Request_Seq AND SOSI08.Reference_Group_Code = 'SO_ShippingInfo' AND SOSI08.Reference_Code = 'SOSI08'
+	LEFT OUTER JOIN dbo.tStockReferenceInformation AS SOSI09 WITH(NOLOCK) ON SOSI09.Owner_Seq = SOR.Stockout_Request_Seq AND SOSI09.Reference_Group_Code = 'SO_ShippingInfo' AND SOSI09.Reference_Code = 'SOSI09'

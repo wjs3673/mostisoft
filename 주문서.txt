@@ -1,0 +1,27 @@
+SELECT
+LO.Location_Code,	-- LOC코드
+GD.Goods_Code,	-- 상품코드
+GD.Goods_Name,	-- 상품명
+(SOG.Request_Quantity - SOG.Withdraw_Quantity) AS Dely_Qty,	-- 상품수량
+[dbo].[fGetSplitIndexString](SOG.External_Reference_Value,'|',2) AS Sales,
+GD.External_Goods_Code	-- B-code
+FROM
+dbo.tStockoutRequestGoods AS SOG WITH(NOLOCK)
+LEFT OUTER JOIN dbo.tGoods AS GD WITH(NOLOCK) ON GD.Goods_Seq = SOG.Goods_Seq	-- 상품
+INNER JOIN dbo.tLocation AS LO WITH(NOLOCK) ON LO.Location_Seq = SOG.Location_Seq
+WHERE SOG.Stockout_Request_Seq = 653143	-- 바꿀 것
+ORDER BY SOG.External_Reference_Value
+
+SELECT
+LO.Location_Code,
+GD.Goods_Code,
+GD.Goods_Name,
+(SOG.Request_Quantity - SOG.Withdraw_Quantity) AS Dely_Qty,
+[dbo].[fGetSplitIndexString](SOG.External_Reference_Value,'|',2) AS Sales,
+FORMAT(TRY_CAST([dbo].[fGetSplitIndexString](SOG.External_Reference_Value, '|', 2) AS MONEY), 'N0') AS Sales,
+GD.External_Goods_Code
+FROM dbo.tStockoutRequestGoods AS SOG WITH(NOLOCK)
+LEFT OUTER JOIN dbo.tGoods GD WITH(NOLOCK) ON GD.Goods_Seq = SOG.Goods_Seq
+INNER JOIN dbo.tLocation AS LO WITH(NOLOCK) ON LO.Location_Seq = SOG.Location_Seq
+WHERE SOG.Stockout_Request_Seq = 663165
+ORDER BY SOG.External_Reference_Value

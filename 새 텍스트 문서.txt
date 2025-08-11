@@ -1,0 +1,76 @@
+                if (courier.COURIER_CODE == "CC001")    // CJ 파주
+                {
+                    string strCJBase = _currentContext.Configuration.SiteAppSettings["CJ_API"];
+
+                    string[] codeCJ = courier.NUMBERING_RULE.Split("/");
+
+                    Rq<RqGetWblNo> rqGetWblNo = new Rq<RqGetWblNo>()
+                    {
+                        data = new RqGetWblNo()
+                        {
+                            p_clntnum = codeCJ[0],
+                            p_clntmgmcustcd = codeCJ[0],
+                            p_reqqty = "1",
+                        }
+                    };
+
+                    // 송장번호 채번
+                    Rs<RsGetWblNo> rsGetWblNo = _serviceClient.PostSync<Rq<RqGetWblNo>, Rs<RsGetWblNo>>($"{strCJBase}/getWblNo.do", rqGetWblNo, null);
+
+                    if (rsGetWblNo.resultCode == 200 && rsGetWblNo.data.errorcd == "0")   // 서비스 성공 및 송장번호 채번 성공
+                    {
+                        // 송장번호 채번
+                        result.RTN_INVOICE_NO.Add(rsGetWblNo.data.output[0].wblno);
+                    }
+                    else // 서비스 실패
+                    {
+                        // 임의의 송장번호 채번
+                        string invoiceType = "CUIVIT01";
+                        string extraYn = "N";
+
+                        for (int i = 0; i < requestQty; i++)
+                        {
+                            RsCustomInvoice customInvoice = _invoiceNoNumberingDac.UpdateCustomInvoiceNumbering(warehouseSeq, courier.COURIER_CODE, invoiceType, extraYn, languageCode, systemId);
+
+                            result.RTN_CODE = customInvoice.RTN_CODE;
+
+                            switch (result.RTN_CODE)
+                            {
+                                case 0:
+                                    result.RTN_INVOICE_NO.Add(customInvoice.RTN_INVOICE_NO);
+
+                                    break;
+                                default:
+                                    result.RTN_INVOICE_NO.Add("xxxxxxx"); // TODO: 해당택배사의 송장채번이 불가능할경우 임시 번호 표시
+
+                                    return result;
+                            }
+                        }
+                    }
+
+                    // 주소 정제
+                    RqGetAddressInformation rqGetAddressInformation = new RqGetAddressInformation()
+                    {
+                        p_clntnum = codeCJ[0],
+                        p_clntmgmcustcd = codeCJ[0],
+                        p_prngdivcd = "01", // 일반
+                        p_farediv = "03",
+                        p_cntrlarccd = "01",
+                        p_boxtyp = "1",
+                        p_sndprsnaddr = "경기도 파주시 탄현면 방촌로 1172-21 스타일24 물류센터 (낙하리 5-3번지)",
+                        p_rcvraddr = address
+                    };
+
+                    // 주소 정제
+                    RsGetAddressInformation rsGetAddressInformation = _serviceClient.PostSync<RqGetAddressInformation, RsGetAddressInformation>($"{strCJBase}/getAddressInformation.do", rqGetAddressInformation, null);
+
+                    if (rsGetAddressInformation.output.p_errorcd == "0") // 주소 정제 성공
+                    {
+                        //// 도착지코드|도착지서브코드
+                        //result.ADDRESS_REFERENCE2 = rsReqAddrRfnSm.DATA.CLSFCD + "|" + rsReqAddrRfnSm.DATA.SUBCLSFCD;
+                        //// 주소약칭
+                        //result.ADDRESS_REFERENCE3 = rsReqAddrRfnSm.DATA.CLSFADDR;
+                        //// 배송집배점명|배송SM명|SM분류코드
+                        //result.ADDRESS_REFERENCE4 = rsReqAddrRfnSm.DATA.CLLDLVBRANNM + "|" + rsReqAddrRfnSm.DATA.CLLDLVEMPNM + "|" + rsReqAddrRfnSm.DATA.CLLDLVEMPNICKNM;
+                    }
+                }

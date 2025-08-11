@@ -1,0 +1,9 @@
+dtoc()
+
+https://wmsbeta.newlo.co.kr/wmsif/SwaggerDocs/Index.html
+Swagger UI
+ 
+
+tcp:newlo-wms-db-dev.database.windows.net,1433
+mydot
+!1q2w3e4r5t6y7u8i
